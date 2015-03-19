@@ -410,8 +410,11 @@ class Article(models.Model):
                         # if anything goes wrong (ie IOError), use the link's text
                         log.warn('Failed to retrieve the title for "%s"; using link text "%s"' % (url, title))
 
+                # This debug statement was causing an issue when
+                # the title contained a unicode character.
+                # log.debug('Using "%s" as title for "%s"' % (title, url))
+
                 # cache the page title for a week
-                log.debug('Using "%s" as title for "%s"' % (title, url))
                 cache.set(key, title, 604800)
 
             # add it to the list of links and titles
