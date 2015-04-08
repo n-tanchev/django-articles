@@ -40,7 +40,8 @@ class ArticleAdminForm(forms.ModelForm):
     def clean_tags(self):
         """Turns the string of tags into a list"""
 
-        tags = [tag(t.strip()) for t in self.cleaned_data['tags'].split() if len(t.strip())]
+        # now tags are "comma separated"
+        tags = [tag(t.strip()) for t in self.cleaned_data['tags'].split(',') if len(t.strip())]
 
         # this doesn't work with unicode, perhaps someone did something with __repr__ as in here:
         # http://stackoverflow.com/questions/2111765/problem-when-using-python-logging-in-django-and-unicode

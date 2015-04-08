@@ -168,7 +168,7 @@ class Article(models.Model):
     content = models.TextField()
     rendered_content = models.TextField()
 
-    tags = models.ManyToManyField(Tag, help_text=_('Tags that describe this article'), blank=True)
+    tags = models.ManyToManyField(Tag, help_text=_('Tags that describe this article, comma separated when input into admin.'), blank=True)
     auto_tag = models.BooleanField(default=AUTO_TAG, blank=True, help_text=_('Check this if you want to automatically assign any existing tags to this article based on its content.'))
     followup_for = models.ManyToManyField('self', symmetrical=False, blank=True, help_text=_('Select any other articles that this article follows up on.'), related_name='followups')
     related_articles = models.ManyToManyField('self', blank=True)
