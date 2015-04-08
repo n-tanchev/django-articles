@@ -24,7 +24,7 @@ def tag(name):
 class ArticleAdminForm(forms.ModelForm):
     tags = forms.CharField(initial='', required=False,
                            widget=forms.TextInput(attrs={'size': 100}),
-                           help_text=_('Words that describe this article'))
+                           help_text=_('Words that describe this article, comma separated, can include spaces.'))
 
     def __init__(self, *args, **kwargs):
         """Sets the list of tags to be a string"""
