@@ -42,7 +42,9 @@ class ArticleAdminForm(forms.ModelForm):
 
         tags = [tag(t.strip()) for t in self.cleaned_data['tags'].split() if len(t.strip())]
 
-        log.debug('Tagging Article %s with: %s' % (self.cleaned_data['title'], tags))
+        # this doesn't work with unicode, perhaps someone did something with __repr__ as in here:
+        # http://stackoverflow.com/questions/2111765/problem-when-using-python-logging-in-django-and-unicode
+        # log.debug('Tagging Article %s with: %s' % (self.cleaned_data['title'], tags))
         self.cleaned_data['tags'] = tags
         return self.cleaned_data['tags']
 
