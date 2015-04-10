@@ -32,7 +32,7 @@ class ArticleAdminForm(forms.ModelForm):
         instance = kwargs.get('instance', None)
         if instance:
             init = kwargs.get('initial', {})
-            init['tags'] = ' '.join([t.name for t in instance.tags.all()])
+            init['tags'] = ', '.join([t.name for t in instance.tags.all()])
             kwargs['initial'] = init
 
         super(ArticleAdminForm, self).__init__(*args, **kwargs)
