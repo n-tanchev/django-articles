@@ -5,6 +5,8 @@ import mimetypes
 import re
 import urllib
 
+from unidecode import unidecode
+
 from django.db import models
 from django.db.models import Q, get_model
 from django.db.models.signals import class_prepared
@@ -63,6 +65,7 @@ class Tag(models.Model):
     def clean_tag(name):
         """Replace spaces with dashes, in case someone adds such a tag manually"""
 
+        name = unidecode(name)
         name = name.replace(' ', '-').encode('ascii', 'ignore')
         name = TAG_RE.sub('', name)
         clean = name.lower().strip(", ")
