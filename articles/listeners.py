@@ -27,7 +27,8 @@ def apply_new_tag(sender, instance, created, using='default', **kwargs):
 
     log.debug('Found %s matches' % len(applicable_articles))
     for article in applicable_articles:
-        log.debug('Applying Tag "%s" (%s) to Article "%s" (%s)' % (instance, instance.pk, article.title, article.pk))
+        # the tag itself may have unicode so this could fail
+        log.debug('Applying Tag "%s" (%s) to Article "%s" (%s)' % (instance.slug, instance.pk, article.title, article.pk))
         article.tags.add(instance)
         article.save()
 
