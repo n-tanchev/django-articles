@@ -64,7 +64,7 @@ class TagFeed(Feed, SiteMixin):
         return self.item_set(obj)[:10]
 
     def item_set(self, obj):
-        key = 'articles_for_%s' % obj.name
+        key = 'articles_for_%s' % obj.slug
         articles = cache.get(key)
 
         if articles is None:
