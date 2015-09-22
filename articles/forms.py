@@ -57,6 +57,7 @@ class ArticleAdminForm(forms.ModelForm):
 
     class Meta:
         model = Article
+        exclude = ()
 
     class Media:
         css = {
