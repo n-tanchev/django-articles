@@ -5,6 +5,7 @@ import mimetypes
 import re
 import urllib
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from unidecode import unidecode
 
 from django.db import models
@@ -97,6 +98,7 @@ class Tag(models.Model):
     class Meta:
         ordering = ('name',)
 
+
 class ArticleStatusManager(models.Manager):
 
     def default(self):
@@ -106,6 +108,7 @@ class ArticleStatusManager(models.Manager):
             return None
         else:
             return default[0]
+
 
 class ArticleStatus(models.Model):
     name = models.CharField(max_length=50)
@@ -160,7 +163,7 @@ MARKUP_HELP = _("""Select the type of markup you are using in this article.
 class Article(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique_for_year='publish_date')
-    status = models.ForeignKey(ArticleStatus, default=ArticleStatus.objects.default)
+    status = models.ForeignKey(ArticleStatus)
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     sites = models.ManyToManyField(Site, blank=True)
 
@@ -168,7 +171,7 @@ class Article(models.Model):
     description = models.TextField(blank=True, help_text=_("If omitted, the description will be determined by the first bit of the article's content."))
 
     markup = models.CharField(max_length=1, choices=MARKUP_OPTIONS, default=MARKUP_DEFAULT, help_text=MARKUP_HELP)
-    content = models.TextField()
+    content = RichTextUploadingField()
     rendered_content = models.TextField()
 
     tags = models.ManyToManyField(Tag, help_text=_('Tags that describe this article, comma separated when input into admin.'), blank=True)
@@ -481,8 +484,13 @@ class Article(models.Model):
         ordering = ('-publish_date', 'title')
         get_latest_by = 'publish_date'
 
+
+def upload_to(self, inst, fn):
+    return 'attach/%s/%s/%s' % (now().year, inst.article.slug, fn)
+
+
 class Attachment(models.Model):
-    upload_to = lambda inst, fn: 'attach/%s/%s/%s' % (now().year, inst.article.slug, fn)
+    # upload_to = lambda inst, fn: 'attach/%s/%s/%s' % (now().year, inst.article.slug, fn)
 
     article = models.ForeignKey(Article, related_name='attachments')
     attachment = models.FileField(upload_to=upload_to)
